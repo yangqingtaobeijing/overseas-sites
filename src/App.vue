@@ -27,7 +27,7 @@ import SearchBar from './components/SearchBar.vue'
           :key="cat.id"
           :to="`/category/${cat.id}`"
           class="flex items-center gap-1.5 px-5 py-3 text-sm font-medium border-b-2 transition-colors"
-          :class="$route.path.includes(cat.id) ? 'border-[var(--cat-color)] text-slate-900' : 'border-transparent text-slate-500 hover:text-slate-700'"
+          :class="$route.params.id === cat.id ? 'border-[var(--cat-color)] text-slate-900' : 'border-transparent text-slate-500 hover:text-slate-700'"
           :style="{ '--cat-color': cat.color }"
         >
           <span>{{ cat.icon }}</span>
