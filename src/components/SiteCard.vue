@@ -1,10 +1,20 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { Site } from '../types'
 
-defineProps<{
+const props = defineProps<{
   site: Site
   color: string
 }>()
+
+const faviconUrl = computed(() => {
+  try {
+    const host = new URL(props.site.url).hostname
+    return `https://www.google.com/s2/favicons?domain=${host}&sz=64`
+  } catch {
+    return ''
+  }
+})
 </script>
 
 <template>
@@ -14,11 +24,20 @@ defineProps<{
     rel="noopener"
     class="group block bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
   >
-    <div class="flex items-start justify-between mb-3">
-      <h3 class="text-base font-bold text-slate-900 group-hover:text-[var(--color)] transition-colors" :style="{ '--color': color }">
-        {{ site.name }}
-      </h3>
-      <svg class="w-4 h-4 text-slate-300 group-hover:text-slate-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="flex items-start gap-3 mb-3">
+      <img
+        :src="faviconUrl"
+        :alt="site.name"
+        class="w-8 h-8 rounded-lg flex-shrink-0 bg-slate-100"
+        loading="lazy"
+        @error="($event.target as HTMLImageElement).style.display = 'none'"
+      />
+      <div class="flex-1 min-w-0">
+        <h3 class="text-base font-bold text-slate-900 group-hover:text-[var(--color)] transition-colors" :style="{ '--color': color }">
+          {{ site.name }}
+        </h3>
+      </div>
+      <svg class="w-4 h-4 text-slate-300 group-hover:text-slate-500 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
       </svg>
     </div>
